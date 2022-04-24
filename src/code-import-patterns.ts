@@ -44,7 +44,8 @@ export class CodeImportPatternsRule implements eslint.Rule.RuleModule {
           patterns,
           node,
           value,
-          !!ruleOption.matchAgainstAbsolutePaths
+          !!ruleOption.matchAgainstAbsolutePaths,
+          ruleOption.allowTypeImport ?? false
         )
       );
     }
@@ -60,7 +61,8 @@ function checkImport(
   patterns: PatternsCollection,
   node: TSESTree.Node,
   pathOfFile: string,
-  matchAgainstAbsolutePaths: boolean
+  matchAgainstAbsolutePaths: boolean,
+  allowTypeImports: boolean
 ) {
   // resolve relative paths if "matchAgainstAbsolutePaths" is configured
   if (matchAgainstAbsolutePaths && pathOfFile[0] === ".") {
@@ -78,6 +80,14 @@ function checkImport(
         break;
       }
     }
+  }
+
+  if (
+    allowTypeImports === true &&
+    node.parent?.type === "ImportDeclaration" &&
+    node.parent?.importKind === "type"
+  ) {
+    return;
   }
 
   let errorMessagesOfViolatedForbiddenPatterns: string[] = [];

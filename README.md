@@ -111,3 +111,20 @@ Enforce the entire codebase to import icons from `components-library/icons.tsx` 
   ],
 }
 ```
+
+Allow type imports, but not value imports:
+
+```javascript
+{
+  allowTypeImport: true,
+  zones: [
+    {
+      target: /\/Foo\/.+/,
+      forbiddenPatterns: [{
+          pattern: /\Bar\/.+/,
+          errorMessage: "Only `type` imports from Bar are allowed in Foo code."
+      }],
+    },
+  ],
+}
+```

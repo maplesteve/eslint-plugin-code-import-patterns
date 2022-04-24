@@ -1,4 +1,5 @@
 export type ImportPatternsConfig = {
+  allowTypeImport?: boolean;
   zones: Zone[];
   matchAgainstAbsolutePaths?: boolean;
 };
